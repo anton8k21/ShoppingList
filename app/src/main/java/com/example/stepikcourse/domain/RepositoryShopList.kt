@@ -6,5 +6,5 @@ interface RepositoryShopList {
     fun addShopItem(shopItem: ShopItem)
     fun editShopItem(shopItem: ShopItem)
     fun getShopItem(shopItemId: Long): ShopItem
-    fun removeShopItem(shopItemId: Long)
+    fun removeShopItem(shopItem: ShopItem)
 }
