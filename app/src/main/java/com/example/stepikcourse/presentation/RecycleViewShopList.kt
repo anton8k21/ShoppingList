@@ -1,21 +1,12 @@
 package com.example.stepikcourse.presentation
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 import com.example.stepikcourse.R
 import com.example.stepikcourse.domain.ShopItem
 
-class RecycleViewShopList:RecyclerView.Adapter<RecycleViewShopList.ViewHolderShopList>() {
-
-    var list = listOf<ShopItem>()
-    set(value){
-        field = value
-        notifyDataSetChanged()
-    }
+class RecycleViewShopList:ListAdapter<ShopItem,ViewHolderShopList>(ShopListDiffItemCallback()) {
 
     var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
     var onShopItemClickListener: ((ShopItem) -> Unit)? = null
@@ -31,7 +22,7 @@ class RecycleViewShopList:RecyclerView.Adapter<RecycleViewShopList.ViewHolderSho
     }
 
     override fun onBindViewHolder(holder: ViewHolderShopList, position: Int) {
-        val item = list[position]
+        val item = getItem(position)
         holder.name.text = item.name
         holder.count.text = item.count.toString()
         holder.itemView.setOnLongClickListener{
@@ -41,23 +32,15 @@ class RecycleViewShopList:RecyclerView.Adapter<RecycleViewShopList.ViewHolderSho
         holder.itemView.setOnClickListener {
             onShopItemClickListener?.invoke(item)
         }
-
     }
 
-    override fun getItemCount(): Int = list.size
 
     override fun getItemViewType(position: Int): Int {
-        val item = list[position]
+        val item = getItem(position)
         return if (item.enabled){
             VIEW_TYPE_ENABLED
         }else
             VIEW_TYPE_DISABLED
-    }
-
-    class ViewHolderShopList(view: View): RecyclerView.ViewHolder(view){
-        val name: TextView = view.findViewById(R.id.text_name)
-        val count:TextView = view.findViewById(R.id.text_count)
-
     }
 
     companion object {
